@@ -2,8 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import {AiFillEyeInvisible, AiFillEye} from "react-icons/ai"
 import { Link } from 'react-router-dom';
-import {OAuth} from "../components/OAuth"
-
+import OAuth from "../components/OAuth";
 
 export default function SignIn() {
 
