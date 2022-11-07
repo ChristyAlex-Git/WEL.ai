@@ -6,7 +6,7 @@ export default function Home() {
       <section class="h-screen bg-cover bg-[url('/public/bg_img1.avif')]" >
       <div class="flex h-full w-full items-center justify-center container mx-auto px-8">
       <div class="max-w-2xl text-center">
-      <h1 class="text-3xl sm:text-5xl tracking-widest text-white lg:text-7xl">CHristy Kuttan Keee Jai</h1>
+      <h1 class="text-3xl sm:text-5xl tracking-widest text-white lg:text-7xl">Johny kuttan</h1>
 
       <p class="mt-6 lg:text-lg text-white">Sending perfect Invitation to the right people.</p>
 
