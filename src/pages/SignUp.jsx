@@ -3,8 +3,30 @@ import { useState } from 'react'
 import {AiFillEyeInvisible, AiFillEye} from "react-icons/ai"
 import { Link } from 'react-router-dom';
 import OAuth from "../components/OAuth";
+import {getAuth,createUserWithEmailAndPassword, updateProfile} from "firebase/auth"
+import {db} from "../firebase"
+import { serverTimestamp, setDoc ,doc} from 'firebase/firestore';
+import {useNavigate } from "react-router-dom"
+
 
 export default function SignUp() {
+  
+
+  //password validation
+  // const [disableSubmit,changeDisableSubmit]=useState(false)
+
+  // function password_validation(e)
+  // {
+  //   if (password1 != password2)
+  //   {
+         //you could just assign two variables disables and nondisabled containg whole of the submit button changingn on condition
+  //     console.log(password1)
+  //     console.log(password2)
+  //     console.log("Passwords doesn't match")
+  //     changeDisableSubmit=true
+
+  //}
+  //   }
 
   const [showPassword1,setShowPassword1]=useState(false);
   const [showPassword2,setShowPassword2]=useState(false);
@@ -16,6 +38,8 @@ export default function SignUp() {
       name:""
     }
   ); 
+
+  const navig=useNavigate()
   const { email, password1,password2,name } =formData
 
   function onChange(e){
@@ -26,6 +50,37 @@ export default function SignUp() {
        
 
     }));
+  }
+  async function onSubmit(e)
+  {
+    //to remove the reload bahaviou of the logup page
+    e.preventDefault()
+    
+    //
+    try {
+      const auth=getAuth()
+      const userCredentials=await createUserWithEmailAndPassword(auth,email,password1);
+      const user=userCredentials.user
+      console.log(user)
+      updateProfile(auth.currentUser,{
+        displayName:name
+      })
+      const formDataCopy={...formData}
+      delete formDataCopy.password1
+      delete formDataCopy.password2
+      formDataCopy.timestamp = serverTimestamp();
+      await setDoc(doc(db, "All Users", user.uid),formDataCopy)
+      console.log("Navigating to the home now")
+      useNavigate("/")
+
+
+    } catch (error) {
+      
+      console.log(error);
+
+    }
+
+
   }
 
   return (
@@ -72,7 +127,7 @@ export default function SignUp() {
 
             {/* signup btton */}
             <button className='w-full h-8 text-white bg-blue-500 text-sm font-medium uppercase rounded shadow-md hover:bg-blue-700 transition duration-200  ease-in-out hover:shadow-lg active:bg-blue-800'
-          type='submit'>Sign Up</button>
+          type='submit' onClick={onSubmit}>Sign Up</button>
           <div className='my-4 flex items-center before:flex-1 before:border-gray-300 before:border-t after:flex-1 after:border-gray-300 after:border-t'>
             <p className='text-center font-semibold mx-4'>OR</p>
           </div>
