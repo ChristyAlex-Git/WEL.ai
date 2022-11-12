@@ -7,7 +7,7 @@ import {getAuth,createUserWithEmailAndPassword, updateProfile} from "firebase/au
 import {db} from "../firebase"
 import { serverTimestamp, setDoc ,doc} from 'firebase/firestore';
 import {useNavigate } from "react-router-dom"
-
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
   
@@ -55,6 +55,7 @@ export default function SignUp() {
   {
     //to remove the reload bahaviou of the logup page
     e.preventDefault()
+    console.log("Inside th on submoit")
     
     //
     try {
@@ -69,14 +70,14 @@ export default function SignUp() {
       delete formDataCopy.password1
       delete formDataCopy.password2
       formDataCopy.timestamp = serverTimestamp();
-      await setDoc(doc(db, "All Users", user.uid),formDataCopy)
-      console.log("Navigating to the home now")
-      useNavigate("/")
+      await setDoc(doc(db, "users", user.uid),formDataCopy)
+      toast.success("Sign in was successful")
+      // console.log("Navigating to the home now")
+      // navig("/")
 
 
     } catch (error) {
-      
-      console.log(error);
+      toast.error("Some thing went wrong with Registration")
 
     }
 
