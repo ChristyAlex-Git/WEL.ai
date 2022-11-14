@@ -2,8 +2,27 @@ import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
 import OAuth from "../components/OAuth";
+import {toast} from "react-toastify"
+import {useNavigate} from "react-router-dom" 
+import { async } from '@firebase/util';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 export default function ForgotPass() {
+
+  async function onSubmit(e)
+  {
+    e.preventDefault()
+    try {
+      const auth=getAuth();
+      await sendPasswordResetEmail(auth,email)
+      toast.success("We have sent you an email")
+      
+    } 
+    catch (error) 
+    {
+      toast.error("failed to sent verification mail")  
+    }
+  }
 
   const [showPassword,setShowPassword]=useState(false);
   const [email, setEmail]=useState("");
@@ -24,7 +43,7 @@ export default function ForgotPass() {
           className='w-full rounded-2xl '/>
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form >
+          <form onSubmit={onSubmit}>
             <input id='email' value={email} type="email" className='w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded-xl transition ease-in-out ' onChange={onChange} placeholder="Email Address"/>
             {/* forgotpass and  */}
             <div className='flex justify-between whitespace-nowrap text-sm sm:text-lg'>
