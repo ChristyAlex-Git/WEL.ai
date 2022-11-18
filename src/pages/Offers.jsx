@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function Offers() {
   return (
-    <div>Offers</div>
+    <div>This is the Offers Page.</div>
   )
 }
